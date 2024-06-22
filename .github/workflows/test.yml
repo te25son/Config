@@ -31,8 +31,13 @@ jobs:
         with:
           just-version: "1.27.0"
 
+      - name: Sync Environment
+        run: rye sync
+
       - name: Lint
-        run: just check
+        run: |
+          source .venv/bin/activate
+          just check
 
       - name: Test
         run: just test --cov-report html
