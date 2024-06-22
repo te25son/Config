@@ -23,7 +23,7 @@ TOML_DATA = """
 field = "top"
 
 [one]
-field = "true"
+field = true
 
 [one.two]
 other = "inner"
@@ -66,18 +66,17 @@ JSON_DATA = """
 """
 
 
-@pytest.mark.skip("Toml file is not parsing correctly.")
 @pytest.mark.parametrize(*file_sources)
-def test_read_files_from_source(
+def test_read_files_from_source_non_empty(
     source: type[FileSourceConfig], extension: str, test_dir: Path
 ) -> None:
     file_path = test_dir / fake.file_name(extension=extension)
     if extension == "toml":
-        file_path.write_text(TOML_DATA, encoding="utf-8")
-    if extension == "yaml":
-        file_path.write_text(YAML_DATA, encoding="utf-8")
+        file_path.write_text(TOML_DATA)
+    elif extension == "yaml":
+        file_path.write_text(YAML_DATA)
     else:
-        file_path.write_text(JSON_DATA, encoding="utf-8")
+        file_path.write_text(JSON_DATA)
 
     result = read_files_from_source(source(headers=("one",), path=file_path))
 
@@ -88,6 +87,15 @@ def test_read_files_from_source(
             "field": ["nested", "items"],
         },
     }
+
+
+@pytest.mark.parametrize(*file_sources)
+def test_read_files_from_source_empty(
+    source: type[FileSourceConfig], extension: str, test_dir: Path
+) -> None:
+    file_path = test_dir / fake.file_name(extension=extension)
+    result = read_files_from_source(source(headers=("one",), path=file_path))
+    assert result == {}
 
 
 @pytest.mark.parametrize(
