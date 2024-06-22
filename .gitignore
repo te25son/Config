@@ -1,0 +1,18 @@
+# ide
+.vscode/
+
+# python generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.coverage
+.hypothesis/
+
+# venv
+.venv

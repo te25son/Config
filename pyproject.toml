@@ -1,0 +1,99 @@
+[project]
+name = "config"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "te25son", email = "te25son@gmail.com" }
+]
+dependencies = [
+    "pydantic>=2.7.4",
+    "pipe>=2.2",
+    "pyyaml>=6.0.1",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "mypy>=1.10.0",
+    "types-pyyaml>=6.0.12.20240311",
+    "pytest>=8.2.2",
+    "hypothesis>=6.103.2",
+    "hypothesis-fspaths>=0.1",
+    "polyfactory>=2.16.0",
+    "faker>=25.9.1",
+    "pytest-cov>=5.0.0",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/config"]
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.coverage.report]
+show_missing = true
+# fail_under = 100
+exclude_lines = [
+    "if TYPE_CHECKING:",
+    "pragma: no cover"
+]
+
+[tool.mypy]
+strict = true
+disallow_untyped_decorators = false
+disallow_subclassing_any = false
+warn_return_any = false
+warn_unused_ignores = false
+ignore_missing_imports = true
+
+[tool.ruff.lint]
+ignore = ["E731", "B008", "COM812",]
+extend-safe-fixes = ["TCH", "TID",]
+select = [
+    "C",   # McCabe
+    "F",   # Pyflakes
+    "I",   # Isort
+    "W",   # Warning
+    "B",   # Flake8-Bugbear
+    "TCH", # Flake8-Type-Checking
+    "PIE", # Flake8-Pie
+    "T20", # Flake8-Print
+    "RET", # Flake8-Return
+    "RUF", # Ruff-Specfic
+    "SIM", # Flake8-Simplify
+    "ARG", # Flake8-Unused-Arguments
+    "PL",  # Pylint
+    "ERA", # Eradicate
+    "COM", # Flake8-Commas
+    "TID", # Flake8-Tidy-Imports
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ARG001",]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint.mccabe]
+# Flag errors (`C901`) whenever the complexity level exceeds 5.
+max-complexity = 5
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]
+order-by-type = true
+force-single-line = false
+known-first-party = ["cake", "tests"]
