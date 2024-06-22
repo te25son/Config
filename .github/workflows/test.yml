@@ -13,20 +13,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install Dependencies
-        run: pip install --no-cache-dir -r requirements.lock
+      - name: Setup Rye
+        uses: eifinger/setup-rye@v3
+        with:
+          version: "0.34.0"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Just
+      - name: Setup Just
         uses: extractions/setup-just@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          just-version: '1.27.0'
+          just-version: "1.27.0"
 
       - name: Lint
         run: just check
